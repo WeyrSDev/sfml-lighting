@@ -25,6 +25,7 @@ struct StaticLightSource {
 	char         actualIntensity;
 
 
+	StaticLightSource() {};
 	StaticLightSource(sf::Vector2i _position, sf::Color _color, char _intensity);
 
 	virtual bool update()       {return !over();         };

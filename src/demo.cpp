@@ -23,6 +23,15 @@ Demo::Demo() {
 	lastClock = clock->getElapsedTime().asMilliseconds();
 
 	map = new Map;
+
+
+	state.brush.type       = stStatic;
+	state.brush.color      = sf::Color::White;
+	state.brush.intensity  = LIGHT_MAX_LIGHTLEVEL;
+	state.brush.sourceTime = 2.0f;
+
+	state.ambientColor     = sf::Color::White;
+	state.ambientIntensity = LIGHT_MAX_LIGHTLEVEL;
 }
 
 
@@ -105,17 +114,17 @@ void Demo::processEvent(sf::Event event) {
 
 ***********************************************************************/
 void Demo::addSource() {
-	switch (brush.type) {
+	switch (state.brush.type) {
 		case stStatic:
-			map->sources.push_back((StaticLightSource *)(new StaticLightSource(brush.position, brush.color, brush.intensity)));
+			map->sources.push_back((StaticLightSource *)(new StaticLightSource(state.brush.position, state.brush.color, state.brush.intensity)));
 			break;
 
 		case stFading:
-			map->sources.push_back((StaticLightSource *)(new FadingLightSource(brush.position, brush.color, brush.intensity, brush.sourceTime)));
+			map->sources.push_back((StaticLightSource *)(new FadingLightSource(state.brush.position, state.brush.color, state.brush.intensity, state.brush.sourceTime)));
 			break;
 
 		case stPulsing:
-			map->sources.push_back((StaticLightSource *)(new PulsingLightSource(brush.position, brush.color, brush.intensity, brush.sourceTime)));
+			map->sources.push_back((StaticLightSource *)(new PulsingLightSource(state.brush.position, state.brush.color, state.brush.intensity, state.brush.sourceTime)));
 			break;
 	}
 }

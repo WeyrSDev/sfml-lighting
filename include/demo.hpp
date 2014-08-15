@@ -16,6 +16,7 @@
 
 #include "defines.hpp"
 #include "source.hpp"
+#include "state.hpp"
 #include "map.hpp"
 
 
@@ -27,15 +28,8 @@ struct Demo {
 	bool running;
 	bool focused;
 
-	Map *map;
-
-	struct {
-		SourceType   type;
-		sf::Color    color;
-		sf::Vector2i position;
-		char         intensity;
-		float        sourceTime;
-	} brush;
+	DemoState  state;
+	Map       *map;
 
 
 	 Demo();
