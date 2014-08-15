@@ -139,10 +139,7 @@ void Map::update(StaticLightSource *tmpSource) {
 
 	resetLight();
 	render();
-
-	if (sf::IntRect(0, 0, MAP_SIZE_X, MAP_SIZE_Y).contains(tmpSource->position))
-		addIntensity(tmpSource->position, tmpSource->intensity, tmpSource->color);
-
+	checkSources(tmpSource);
 	light();
 }
 
@@ -155,6 +152,21 @@ void Map::update(StaticLightSource *tmpSource) {
 ***********************************************************************/
 void Map::render() {
 	renderTiles();
+}
+
+
+
+/***********************************************************************
+     * Map
+     * checkSources
+
+***********************************************************************/
+void Map::checkSources(StaticLightSource *tmpSource) {
+	for (unsigned int i = 0; i < sources.size(); i++)
+		addIntensity(sources[i]->position, sources[i]->getIntensity(), sources[i]->color);
+
+	if (sf::IntRect(0, 0, MAP_SIZE_X, MAP_SIZE_Y).contains(tmpSource->position))
+		addIntensity(tmpSource->position, tmpSource->intensity, tmpSource->color);
 }
 
 

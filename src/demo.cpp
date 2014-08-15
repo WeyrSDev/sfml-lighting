@@ -59,13 +59,13 @@ void Demo::update() {
 	frameClock = (currentClock - lastClock) / 1000.0;
 	lastClock = currentClock;
 
-	processEvents();
-
 	state.brush.position = sf::Vector2i(sf::Mouse::getPosition(*app) / TILE_SIZE);
 	state.tmpSource = StaticLightSource(state.brush.position, state.brush.color, state.brush.intensity);
 
 	map->ambientColor     = state.ambientColor;
 	map->ambientIntensity = state.ambientIntensity;
+
+	processEvents();
 
 
 	app->clear();
@@ -109,6 +109,11 @@ void Demo::processEvent(sf::Event event) {
 	switch(event.type) {
 		case sf::Event::Closed:
 			stop();
+			break;
+
+		case sf::Event::MouseButtonReleased:
+			if (event.mouseButton.button == sf::Mouse::Left) addSource();
+			if (event.mouseButton.button == sf::Mouse::Right) map->clear();
 			break;
 	}
 }

@@ -45,6 +45,7 @@ struct Map {
 	~Map();
 
 	void update(StaticLightSource *tmpSource);
+	void checkSources(StaticLightSource *tmpSource);
 	void render();
 	void renderTiles();
 	void clear() {deleteList(sources); };

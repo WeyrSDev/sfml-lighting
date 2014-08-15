@@ -67,7 +67,7 @@ bool FadingLightSource::update() {
 ***********************************************************************/
 bool PulsingLightSource::update() {
 	life           += frameClock;
-	actualIntensity = (char)(intensity * abs(cos(3.1415926 * (life / period))));
+	actualIntensity = (char)abs(intensity * (cos(3.1415926 * (life / period))));
 
 	return !over();
 }
