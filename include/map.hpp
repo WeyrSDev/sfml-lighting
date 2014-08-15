@@ -24,6 +24,9 @@ struct Map {
 	sf::Texture *tileTex;
 	sf::Sprite  *tileSpr;
 
+	char      ambientIntensity;
+	sf::Color ambientColor;
+
 	std::vector<StaticLightSource *> sources;
 	char tiles[MAP_SIZE_X][MAP_SIZE_Y];
 

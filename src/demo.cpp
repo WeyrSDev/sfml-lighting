@@ -60,6 +60,11 @@ void Demo::update() {
 	lastClock = currentClock;
 
 	processEvents();
+	state.tmpSource = StaticLightSource(sf::Vector2i(sf::Mouse::getPosition(*app) / TILE_SIZE), state.brush.color, state.brush.intensity);
+
+	map->ambientColor     = state.ambientColor;
+	map->ambientIntensity = state.ambientIntensity;
+
 
 	app->clear();
 	render();
