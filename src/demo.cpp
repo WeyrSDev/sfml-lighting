@@ -17,10 +17,12 @@
 ***********************************************************************/
 Demo::Demo() {
 	clock = new sf::Clock;
-	app   = new sf::RenderWindow(sf::VideoMode(940, 480, 32), "SFML Lighting demo by Achpile", sf::Style::Close);
+	app   = new sf::RenderWindow(sf::VideoMode(1000, 608, 32), "SFML Lighting demo by Achpile", sf::Style::Close);
 
 	running   = true;
 	lastClock = clock->getElapsedTime().asMilliseconds();
+
+	map = new Map;
 }
 
 
@@ -31,6 +33,7 @@ Demo::Demo() {
 
 ***********************************************************************/
 Demo::~Demo() {
+	delete map;
 	delete clock;
 	delete app;
 }
@@ -50,7 +53,19 @@ void Demo::update() {
 	processEvents();
 
 	app->clear();
+	render();
 	app->display();
+}
+
+
+
+/***********************************************************************
+     * Demo
+     * render
+
+***********************************************************************/
+void Demo::render() {
+	map->update();
 }
 
 

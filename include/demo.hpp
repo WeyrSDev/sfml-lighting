@@ -14,20 +14,26 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "defines.hpp"
+#include "map.hpp"
+
 
 struct Demo {
-	sf::Clock        *clock;
+	sf::Clock *clock;
 
 	long currentClock;
 	long lastClock;
 	bool running;
 	bool focused;
 
+	Map *map;
+
 
 	 Demo();
 	~Demo();
 
 	void update();
+	void render();
 	void stop() { running = false; };
 
 	void processEvents();
