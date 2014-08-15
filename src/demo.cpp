@@ -31,7 +31,7 @@ Demo::Demo() {
 	state.brush.sourceTime = 2.0f;
 
 	state.ambientColor     = sf::Color::White;
-	state.ambientIntensity = LIGHT_MAX_LIGHTLEVEL;
+	state.ambientIntensity = 0;
 }
 
 
@@ -60,7 +60,9 @@ void Demo::update() {
 	lastClock = currentClock;
 
 	processEvents();
-	state.tmpSource = StaticLightSource(sf::Vector2i(sf::Mouse::getPosition(*app) / TILE_SIZE), state.brush.color, state.brush.intensity);
+
+	state.brush.position = sf::Vector2i(sf::Mouse::getPosition(*app) / TILE_SIZE);
+	state.tmpSource = StaticLightSource(state.brush.position, state.brush.color, state.brush.intensity);
 
 	map->ambientColor     = state.ambientColor;
 	map->ambientIntensity = state.ambientIntensity;
@@ -79,7 +81,7 @@ void Demo::update() {
 
 ***********************************************************************/
 void Demo::render() {
-	map->update();
+	map->update(&state.tmpSource);
 }
 
 

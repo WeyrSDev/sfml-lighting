@@ -15,6 +15,7 @@
 #include <math.h>
 
 #include "defines.hpp"
+#include "misc.hpp"
 #include "source.hpp"
 #include "state.hpp"
 #include "map.hpp"

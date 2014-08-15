@@ -83,20 +83,29 @@ Map::Map() {
 		"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 	};
 
-	for (int i = 0; i < MAP_SIZE_X; i++) for (int j = 0; j < MAP_SIZE_Y; j++) 
+	for (int i = 0; i < MAP_SIZE_X; i++) for (int j = 0; j < MAP_SIZE_Y; j++) {
+		tiles[i][j].index = sf::Vector2i(i, j);
+
 		switch (_tiles[i][j]) {
 			case 'X':
-				tiles[i][j] = mtSolid;
+				tiles[i][j].type   = mtSolid;
+				tiles[i][j].absorb = 4;
 				break;
 
 			case '.':
-				tiles[i][j] = mtWall;
+				tiles[i][j].type   = mtWall;
+				tiles[i][j].absorb = 1;
 				break;
 
 			case ' ':
-				tiles[i][j] = mtAir;
+				tiles[i][j].type = mtAir;
+				tiles[i][j].absorb = 1;
 				break;
 		}
+	}
+
+	int lightCount = MAP_SIZE_X * MAP_SIZE_Y;
+	for (int i = 0; i < LIGHT_MAX_LIGHTLEVEL; i++) lightTiles[i] = new MapTile*[lightCount];
 }
 
 
@@ -107,6 +116,8 @@ Map::Map() {
 
 ***********************************************************************/
 Map::~Map() {
+	for (int i = 0; i < LIGHT_MAX_LIGHTLEVEL; delete lightTiles[i++]);
+
 	delete bgTex;
 	delete bgSpr;
 
@@ -123,9 +134,16 @@ Map::~Map() {
      * update
 
 ***********************************************************************/
-void Map::update() {
+void Map::update(StaticLightSource *tmpSource) {
 	updateList(sources);
+
+	resetLight();
 	render();
+
+	if (sf::IntRect(0, 0, MAP_SIZE_X, MAP_SIZE_Y).contains(tmpSource->position))
+		addIntensity(tmpSource->position, tmpSource->intensity, tmpSource->color);
+
+	light();
 }
 
 
@@ -136,6 +154,17 @@ void Map::update() {
 
 ***********************************************************************/
 void Map::render() {
+	renderTiles();
+}
+
+
+
+/***********************************************************************
+     * Map
+     * renderTiles
+
+***********************************************************************/
+void Map::renderTiles() {
 	sf::Color tileColor;
 
 	app->draw(*bgSpr);
@@ -143,7 +172,7 @@ void Map::render() {
 	for (int i = 0; i < MAP_SIZE_X; i++) for (int j = 0; j < MAP_SIZE_Y; j++) {
 		tileColor = sf::Color::White;
 
-		switch (tiles[i][j]) {
+		switch (tiles[i][j].type) {
 			case mtWall:
 				tileColor = sf::Color(140, 140, 140, 255);
 

@@ -10,11 +10,22 @@
 #define __MAP
 
 
-enum MapTile {
+enum MapTileType {
 	mtAir,
 	mtWall,
 	mtSolid
 };
+
+
+
+struct MapTile {
+	MapTileType  type;
+	sf::Color    light;
+	sf::Vector2i index;
+	char         intensity;
+	char         absorb;
+};
+
 
 
 struct Map {
@@ -28,14 +39,17 @@ struct Map {
 	sf::Color ambientColor;
 
 	std::vector<StaticLightSource *> sources;
-	char tiles[MAP_SIZE_X][MAP_SIZE_Y];
+	MapTile tiles[MAP_SIZE_X][MAP_SIZE_Y];
 
 	 Map();
 	~Map();
 
-	void update();
+	void update(StaticLightSource *tmpSource);
 	void render();
+	void renderTiles();
 	void clear() {deleteList(sources); };
+
+	#include "lighting.hpp"
 };
 
 
