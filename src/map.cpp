@@ -112,6 +112,8 @@ Map::~Map() {
 
 	delete tileTex;
 	delete tileSpr;
+
+	deleteList(sources);
 }
 
 
@@ -122,6 +124,7 @@ Map::~Map() {
 
 ***********************************************************************/
 void Map::update() {
+	updateList(sources);
 	render();
 }
 
