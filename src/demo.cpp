@@ -96,3 +96,26 @@ void Demo::processEvent(sf::Event event) {
 			break;
 	}
 }
+
+
+
+/***********************************************************************
+     * Demo
+     * addSource
+
+***********************************************************************/
+void Demo::addSource() {
+	switch (brush.type) {
+		case stStatic:
+			map->sources.push_back((StaticLightSource *)(new StaticLightSource(brush.position, brush.color, brush.intensity)));
+			break;
+
+		case stFading:
+			map->sources.push_back((StaticLightSource *)(new FadingLightSource(brush.position, brush.color, brush.intensity, brush.sourceTime)));
+			break;
+
+		case stPulsing:
+			map->sources.push_back((StaticLightSource *)(new PulsingLightSource(brush.position, brush.color, brush.intensity, brush.sourceTime)));
+			break;
+	}
+}

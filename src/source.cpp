@@ -16,9 +16,10 @@
 
 ***********************************************************************/
 StaticLightSource::StaticLightSource(sf::Vector2i _position, sf::Color _color, char _intensity) {
-	position  = _position;
-	color     = _color;
-	intensity = _intensity;
+	position        = _position;
+	color           = _color;
+	intensity       = _intensity;
+	actualIntensity = _intensity;
 }
 
 

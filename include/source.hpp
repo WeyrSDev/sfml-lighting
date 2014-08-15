@@ -10,6 +10,14 @@
 #define __SOURCE
 
 
+enum SourceType {
+	stStatic,
+	stFading,
+	stPulsing
+};
+
+
+
 struct StaticLightSource {
 	sf::Vector2i position;
 	sf::Color    color;
@@ -25,6 +33,7 @@ struct StaticLightSource {
 };
 
 
+
 struct FadingLightSource : StaticLightSource {
 	float lifetime;
 	float life;
@@ -35,6 +44,7 @@ struct FadingLightSource : StaticLightSource {
 	bool update();
 	bool over() {return (life > lifetime); };
 };
+
 
 
 struct PulsingLightSource : StaticLightSource {

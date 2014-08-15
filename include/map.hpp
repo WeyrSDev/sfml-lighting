@@ -32,6 +32,7 @@ struct Map {
 
 	void update();
 	void render();
+	void clear() {deleteList(sources); };
 };
 
 

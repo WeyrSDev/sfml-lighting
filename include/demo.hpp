@@ -29,6 +29,14 @@ struct Demo {
 
 	Map *map;
 
+	struct {
+		SourceType   type;
+		sf::Color    color;
+		sf::Vector2i position;
+		char         intensity;
+		float        sourceTime;
+	} brush;
+
 
 	 Demo();
 	~Demo();
@@ -39,6 +47,8 @@ struct Demo {
 
 	void processEvents();
 	void processEvent(sf::Event event);
+
+	void addSource();
 };
 
 
