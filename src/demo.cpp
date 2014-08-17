@@ -26,12 +26,12 @@ Demo::Demo() {
 
 
 	state.brush.type       = stStatic;
-	state.brush.color      = sf::Color::White;
+	state.brush.color      = sf::Color::Red;
 	state.brush.intensity  = LIGHT_MAX_LIGHTLEVEL;
 	state.brush.sourceTime = 2.0f;
 
 	state.ambientColor     = sf::Color::White;
-	state.ambientIntensity = 0;
+	state.ambientIntensity = 5;
 }
 
 
