@@ -11,12 +11,14 @@
 
 
 #include <SFML/Graphics.hpp>
+#include <SFGUI/SFGUI.hpp>
 #include <stdio.h>
 #include <math.h>
 
 #include "defines.hpp"
 #include "misc.hpp"
 #include "source.hpp"
+#include "controls.hpp"
 #include "state.hpp"
 #include "map.hpp"
 
@@ -29,8 +31,9 @@ struct Demo {
 	bool running;
 	bool focused;
 
-	DemoState  state;
-	Map       *map;
+	DemoState     state;
+	DemoControls  controls;
+	Map          *map;
 
 
 	 Demo();
@@ -49,5 +52,6 @@ struct Demo {
 
 extern float                frameClock;
 extern sf::RenderWindow    *app;
+extern sfg::SFGUI           sfgui;
 
 #endif

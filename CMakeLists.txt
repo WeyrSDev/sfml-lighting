@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED ( VERSION 2.8 )
 
-SET ( CMAKE_LINK_LIBS sfml-graphics sfml-window sfml-system m stdc++ )
+SET ( CMAKE_LINK_LIBS sfml-graphics sfml-window sfml-system sfgui m stdc++ )
 SET ( CMAKE_CXX_FLAGS  "-std=c++11" )
 SET ( CMAKE_PROJECT   lighting )
 FILE ( GLOB SRC "src/*.cpp" )

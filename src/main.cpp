@@ -17,7 +17,7 @@
 float             frameClock;
 sf::RenderWindow *app;
 Demo             *demo;
-
+sfg::SFGUI        sfgui;
 
 
 /***********************************************************************

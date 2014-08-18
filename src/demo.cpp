@@ -21,6 +21,7 @@ Demo::Demo() {
 
 	running   = true;
 	lastClock = clock->getElapsedTime().asMilliseconds();
+	controls.init();
 
 	map = new Map;
 
@@ -66,6 +67,7 @@ void Demo::update() {
 	map->ambientIntensity = state.ambientIntensity;
 
 	processEvents();
+	controls.update();
 
 
 	app->clear();
@@ -81,6 +83,7 @@ void Demo::update() {
 
 ***********************************************************************/
 void Demo::render() {
+	controls.render();
 	map->update(&state.tmpSource);
 }
 
