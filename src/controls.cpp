@@ -134,6 +134,7 @@ void DemoControls::init(DemoState *state) {
 	brStyle->AppendItem("Static");
 	brStyle->AppendItem("Fading");
 	brStyle->AppendItem("Pulsing");
+	brStyle->SelectItem(0);
 	box->Pack(brStyle);
 
 	box->Pack(sfg::Label::Create("Source time"), false);
