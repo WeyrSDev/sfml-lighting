@@ -13,7 +13,20 @@
 struct DemoControls {
 	sfg::Desktop desktop;
 
-	void init();
+	sfg::Adjustment::Ptr ambIntensityAdj;
+	sfg::Adjustment::Ptr ambColR;
+	sfg::Adjustment::Ptr ambColG;
+	sfg::Adjustment::Ptr ambColB;
+
+	sfg::Adjustment::Ptr brIntensityAdj;
+	sfg::Adjustment::Ptr brColR;
+	sfg::Adjustment::Ptr brColG;
+	sfg::Adjustment::Ptr brColB;
+
+	sfg::ComboBox::Ptr   brStyle;
+	sfg::SpinButton::Ptr brTime;
+
+	void init(DemoState *state);
 	void update();
 	void render();
 };

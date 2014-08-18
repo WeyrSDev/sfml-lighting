@@ -14,4 +14,6 @@ sf::Color mixColors(sf::Color c1, sf::Color c2);
 bool canMixColors(sf::Color base, sf::Color light);
 float sqr(float x);
 
+void clearSources();
+
 #endif

@@ -21,9 +21,7 @@ Demo::Demo() {
 
 	running   = true;
 	lastClock = clock->getElapsedTime().asMilliseconds();
-	controls.init();
-
-	map = new Map;
+	map       = new Map;
 
 
 	state.brush.type       = stStatic;
@@ -33,6 +31,8 @@ Demo::Demo() {
 
 	state.ambientColor     = sf::Color::White;
 	state.ambientIntensity = 5;
+
+	controls.init(&state);
 }
 
 
@@ -60,6 +60,25 @@ void Demo::update() {
 	frameClock = (currentClock - lastClock) / 1000.0;
 	lastClock = currentClock;
 
+
+	state.ambientIntensity = (char)controls.ambIntensityAdj->GetValue();
+	state.ambientColor.r   = (char)controls.ambColR->GetValue();
+	state.ambientColor.g   = (char)controls.ambColG->GetValue();
+	state.ambientColor.b   = (char)controls.ambColB->GetValue();
+
+	state.brush.intensity  = (char)controls.brIntensityAdj->GetValue();
+	state.brush.color.r    = (char)controls.brColR->GetValue();
+	state.brush.color.g    = (char)controls.brColG->GetValue();
+	state.brush.color.b    = (char)controls.brColB->GetValue();
+	state.brush.sourceTime = controls.brTime->GetValue();
+
+	switch(controls.brStyle->GetSelectedItem()) {
+		case 0: state.brush.type = stStatic;  break;
+		case 1: state.brush.type = stFading;  break;
+		case 2: state.brush.type = stPulsing; break;
+	}
+
+
 	state.brush.position = sf::Vector2i(sf::Mouse::getPosition(*app) / TILE_SIZE);
 	state.tmpSource = StaticLightSource(state.brush.position, state.brush.color, state.brush.intensity);
 
@@ -83,8 +102,8 @@ void Demo::update() {
 
 ***********************************************************************/
 void Demo::render() {
-	controls.render();
 	map->update(&state.tmpSource);
+	controls.render();
 }
 
 
@@ -109,6 +128,8 @@ void Demo::processEvents() {
 
 ***********************************************************************/
 void Demo::processEvent(sf::Event event) {
+	controls.desktop.HandleEvent(event);
+
 	switch(event.type) {
 		case sf::Event::Closed:
 			stop();
@@ -129,6 +150,8 @@ void Demo::processEvent(sf::Event event) {
 
 ***********************************************************************/
 void Demo::addSource() {
+	if (! sf::IntRect(0, 0, 800, 608).contains(sf::Mouse::getPosition(*app))) return;
+
 	switch (state.brush.type) {
 		case stStatic:
 			map->sources.push_back((StaticLightSource *)(new StaticLightSource(state.brush.position, state.brush.color, state.brush.intensity)));
@@ -136,10 +159,12 @@ void Demo::addSource() {
 
 		case stFading:
 			map->sources.push_back((StaticLightSource *)(new FadingLightSource(state.brush.position, state.brush.color, state.brush.intensity, state.brush.sourceTime)));
+			printf("time is %3.2f\n", state.brush.sourceTime);
 			break;
 
 		case stPulsing:
 			map->sources.push_back((StaticLightSource *)(new PulsingLightSource(state.brush.position, state.brush.color, state.brush.intensity, state.brush.sourceTime)));
+			printf("time is %3.2f\n", state.brush.sourceTime);
 			break;
 	}
 }

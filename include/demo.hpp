@@ -18,8 +18,8 @@
 #include "defines.hpp"
 #include "misc.hpp"
 #include "source.hpp"
-#include "controls.hpp"
 #include "state.hpp"
+#include "controls.hpp"
 #include "map.hpp"
 
 
@@ -53,5 +53,6 @@ struct Demo {
 extern float                frameClock;
 extern sf::RenderWindow    *app;
 extern sfg::SFGUI           sfgui;
+extern Demo                *demo;
 
 #endif
