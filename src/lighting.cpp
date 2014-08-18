@@ -131,10 +131,10 @@ void Map::checkNeighbours(MapTile *tile) {
 	if (y < MAP_SIZE_Y - 1) setIntensity(&tiles[x][y+1], intensity, color);
 
 
-	intensity--;
-	color.r *= 0.85f;
-	color.g *= 0.85f;
-	color.b *= 0.85f;
+	//intensity--;
+	color.r *= 0.75f;
+	color.g *= 0.75f;
+	color.b *= 0.75f;
 
 	if (x > 0         && y < MAP_SIZE_Y - 1) setIntensity(&tiles[x-1][y+1], intensity, color);
 	if (x < MAP_SIZE_X - 1 && y > 0)         setIntensity(&tiles[x+1][y-1], intensity, color);
