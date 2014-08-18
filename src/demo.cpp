@@ -159,12 +159,10 @@ void Demo::addSource() {
 
 		case stFading:
 			map->sources.push_back((StaticLightSource *)(new FadingLightSource(state.brush.position, state.brush.color, state.brush.intensity, state.brush.sourceTime)));
-			printf("time is %3.2f\n", state.brush.sourceTime);
 			break;
 
 		case stPulsing:
 			map->sources.push_back((StaticLightSource *)(new PulsingLightSource(state.brush.position, state.brush.color, state.brush.intensity, state.brush.sourceTime)));
-			printf("time is %3.2f\n", state.brush.sourceTime);
 			break;
 	}
 }
