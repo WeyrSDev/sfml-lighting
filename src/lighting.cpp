@@ -57,18 +57,21 @@ void Map::initIntensity(MapTile *tile) {
 
 ***********************************************************************/
 void Map::setIntensity(MapTile *tile, char intensity, sf::Color color) {
-	tile->light = mixColors(tile->light, color);
 
-	if (intensity > tile->intensity) {
-		tile->intensity = intensity;
+	if (intensity > tile->intensity || canMixColors(tile->light, color)) {
+		tile->light = mixColors(tile->light, color);
 
-		int index = tile->intensity - 1;
+		if (intensity != tile->intensity) {
+			tile->intensity = intensity;
 
-		if (index < 0) return;
-		if (index >= LIGHT_MAX_LIGHTLEVEL) return;
+			int index = tile->intensity - 1;
 
-		lightTiles[index][lightCounts[index]] = tile;
-		lightCounts[index]++;
+			if (index < 0) return;
+			if (index >= LIGHT_MAX_LIGHTLEVEL) return;
+
+			lightTiles[index][lightCounts[index]] = tile;
+			lightCounts[index]++;
+		}
 	}
 }
 
