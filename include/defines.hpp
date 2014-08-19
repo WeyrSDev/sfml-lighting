@@ -24,8 +24,8 @@
      * Lighting constants
 
 ***********************************************************************/
-#define LIGHT_MAX_LIGHTLEVEL    24
-#define LIGHT_ABSOLUTE          20
+#define LIGHT_MAX_LIGHTLEVEL    100
+#define LIGHT_ABSOLUTE          80
 
 
 

@@ -89,17 +89,17 @@ Map::Map() {
 		switch (_tiles[i][j]) {
 			case 'X':
 				tiles[i][j].type   = mtSolid;
-				tiles[i][j].absorb = 4;
+				tiles[i][j].absorb = 15;
 				break;
 
 			case '.':
 				tiles[i][j].type   = mtWall;
-				tiles[i][j].absorb = 1;
+				tiles[i][j].absorb = 6;
 				break;
 
 			case ' ':
 				tiles[i][j].type = mtAir;
-				tiles[i][j].absorb = 1;
+				tiles[i][j].absorb = 3;
 				break;
 		}
 	}
