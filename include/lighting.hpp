@@ -21,7 +21,7 @@ void buildLight();
 void renderLight();
 void setIntensity(MapTile *tile, char intensity, sf::Color color);
 void addIntensity(sf::Vector2i index, char intensity, sf::Color color);
-void initIntensity(MapTile *tile, char intensity, sf::Color color);
+void initIntensity(MapTile *tile);
 void checkNeighbours(MapTile *tile);
 sf::Uint8    getColor(char intensity);
 sf::Vector2f getTilePos(int x, int y);

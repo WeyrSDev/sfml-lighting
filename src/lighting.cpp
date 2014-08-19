@@ -42,38 +42,11 @@ void Map::addIntensity(sf::Vector2i index, char intensity, sf::Color color) {
      * initIntensity
 
 ***********************************************************************/
-void Map::initIntensity(MapTile *tile, char intensity, sf::Color color) {
-	float k;
-	if (intensity >= LIGHT_ABSOLUTE) k = 1.0f;
-	else                             k = (float)intensity / (float)LIGHT_ABSOLUTE;
-
-
-	color.r = (char)(color.r * k);
-	color.g = (char)(color.g * k);
-	color.b = (char)(color.b * k);
-	color.a = 255;
-
-
-	sf::Color tmpLight = tile->light;
-	if (tile->intensity >= LIGHT_ABSOLUTE) k = 1.0f;
-	else                                   k = (float)tile->intensity / (float)LIGHT_ABSOLUTE;
-
-	tmpLight.r = (char)(tmpLight.r * k);
-	tmpLight.g = (char)(tmpLight.g * k);
-	tmpLight.b = (char)(tmpLight.b * k);
-	tmpLight.a = 255;
-
-
-	if (tile->intensity < intensity) tile->intensity = intensity;
-	tile->light = mixColors(tmpLight, color);
-
+void Map::initIntensity(MapTile *tile) {
 	int index = tile->intensity - 1;
+	if (index < 0 || index >= LIGHT_MAX_LIGHTLEVEL) return;
 
-	if (index < 0) return;
-	if (index >= LIGHT_MAX_LIGHTLEVEL) return;
-
-	lightTiles[index][lightCounts[index]] = tile;
-	lightCounts[index]++;
+	lightTiles[index][lightCounts[index]++] = tile;
 }
 
 
@@ -84,9 +57,10 @@ void Map::initIntensity(MapTile *tile, char intensity, sf::Color color) {
 
 ***********************************************************************/
 void Map::setIntensity(MapTile *tile, char intensity, sf::Color color) {
-	if (canMixColors(tile->light, color) || intensity > tile->intensity) {
-		if (intensity > tile->intensity)
-			tile->intensity = intensity;
+	tile->light = mixColors(tile->light, color);
+
+	if (intensity > tile->intensity) {
+		tile->intensity = intensity;
 
 		int index = tile->intensity - 1;
 
@@ -96,8 +70,6 @@ void Map::setIntensity(MapTile *tile, char intensity, sf::Color color) {
 		lightTiles[index][lightCounts[index]] = tile;
 		lightCounts[index]++;
 	}
-
-	tile->light = mixColors(tile->light, color);
 }
 
 
@@ -110,24 +82,27 @@ void Map::setIntensity(MapTile *tile, char intensity, sf::Color color) {
 void Map::checkNeighbours(MapTile *tile) {
 	int x = tile->index.x;
 	int y = tile->index.y;
-	float k;
+	float k1, k2;
 
 	char intensity = tile->intensity - tile->absorb;
 	if (intensity < 0) return;
 
-	if (intensity > LIGHT_ABSOLUTE)             k = 1.0f;
-	else if (tile->intensity >= LIGHT_ABSOLUTE) k = (float)intensity / (float)LIGHT_ABSOLUTE;
-	else                                        k = (float)intensity / (float)tile->intensity;
+
+	if (intensity >= LIGHT_ABSOLUTE) k1 = 1.0f;
+	else k1 = (float)intensity / (float)LIGHT_ABSOLUTE;
+
+	if (tile->intensity >= LIGHT_ABSOLUTE) k2 = 1.0f;
+	else k2 = (float)tile->intensity / (float)LIGHT_ABSOLUTE;
 
 	sf::Color color;
-	color.r = (char)(tile->light.r * k);
-	color.g = (char)(tile->light.g * k);
-	color.b = (char)(tile->light.b * k);
+	color.r = (char)(tile->light.r * k1 / k2);
+	color.g = (char)(tile->light.g * k1 / k2);
+	color.b = (char)(tile->light.b * k1 / k2);
 	color.a = 255;
 
-	if (x > 0)         setIntensity(&tiles[x-1][y], intensity, color);
+	if (x > 0             ) setIntensity(&tiles[x-1][y], intensity, color);
 	if (x < MAP_SIZE_X - 1) setIntensity(&tiles[x+1][y], intensity, color);
-	if (y > 0)         setIntensity(&tiles[x][y-1], intensity, color);
+	if (y > 0             ) setIntensity(&tiles[x][y-1], intensity, color);
 	if (y < MAP_SIZE_Y - 1) setIntensity(&tiles[x][y+1], intensity, color);
 
 
@@ -135,9 +110,9 @@ void Map::checkNeighbours(MapTile *tile) {
 	color.g *= 0.75f;
 	color.b *= 0.75f;
 
-	if (x > 0         && y < MAP_SIZE_Y - 1) setIntensity(&tiles[x-1][y+1], intensity, color);
-	if (x < MAP_SIZE_X - 1 && y > 0)         setIntensity(&tiles[x+1][y-1], intensity, color);
-	if (y > 0         && x > 0)         setIntensity(&tiles[x-1][y-1], intensity, color);
+	if (x > 0              && y < MAP_SIZE_Y - 1) setIntensity(&tiles[x-1][y+1], intensity, color);
+	if (x < MAP_SIZE_X - 1 && y > 0             ) setIntensity(&tiles[x+1][y-1], intensity, color);
+	if (y > 0              && x > 0             ) setIntensity(&tiles[x-1][y-1], intensity, color);
 	if (y < MAP_SIZE_Y - 1 && x < MAP_SIZE_X - 1) setIntensity(&tiles[x+1][y+1], intensity, color);
 }
 
@@ -164,12 +139,23 @@ void Map::resetLight() {
 	sf::Vector2i from(0, 0);
 	sf::Vector2i to(MAP_SIZE_X, MAP_SIZE_Y);
 
+	float k;
+	if (ambientIntensity >= LIGHT_ABSOLUTE) k = 1.0f;
+	else k = (float)ambientIntensity / (float)LIGHT_ABSOLUTE;
+
+	sf::Color color = ambientColor;
+	color.r = (char)(color.r * k);
+	color.g = (char)(color.g * k);
+	color.b = (char)(color.b * k);
+	color.a = 255;
+
+
 	for (int i = 0; i < LIGHT_MAX_LIGHTLEVEL; lightCounts[i++] = 0);
 	for (int i = from.x; i < to.x; i++)
 		for (int j = from.y; j < to.y; j++)
 			if (tiles[i][j].type == mtAir) {
 				tiles[i][j].intensity = ambientIntensity;
-				tiles[i][j].light     = ambientColor;
+				tiles[i][j].light     = color;
 			} else {
 				tiles[i][j].intensity = 0;
 				tiles[i][j].light     = sf::Color::Black;
@@ -189,7 +175,7 @@ void Map::buildLight() {
 
 	for (int i = from.x; i < to.x; i++)
 		for (int j = from.y; j < to.y; j++)
-			initIntensity(&tiles[i][j], tiles[i][j].intensity, tiles[i][j].light);
+			initIntensity(&tiles[i][j]);
 
 	for (int i = LIGHT_MAX_LIGHTLEVEL - 1; i >= 0; i--)
 		for (int j = 0; j < lightCounts[i]; j++) {
