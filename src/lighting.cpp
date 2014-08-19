@@ -20,7 +20,6 @@ void Map::addIntensity(sf::Vector2i index, char intensity, sf::Color color) {
 		return;
 
 	color = applyIntensity(color, intensity);
-	tiles[index.x][index.y].light = color;
 	tiles[index.x][index.y].light = mixColors(tiles[index.x][index.y].light, color);
 
 	if (tiles[index.x][index.y].intensity < intensity)
